@@ -96,7 +96,7 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, []);
+  }, [gameState]);
 
   // Update player positions based on input
   useEffect(() => {
@@ -347,6 +347,10 @@ function App() {
         const obsTop = obs.y;
         const obsBottom = obs.y + obs.height;
 
+        // Special handling for air branches - only collide if not crawling
+        if (isBottom && obs.type === 'air_branch' && bottomPlayerState === 'crawling') {
+          return false; // No collision when crawling under branches
+        }
         return (
           playerRight > obsLeft &&
           playerLeft < obsRight &&
