@@ -20,7 +20,7 @@ const StickFigure: React.FC<StickFigureProps> = ({
   const limbLength = size * 0.25;
   
   // Animation offset for running
-  const animOffset = isRunning ? Math.sin(Date.now() * 0.01) * 3 : 0;
+  const animOffset = isRunning ? Math.sin(Date.now() * 0.015) * 4 : 0;
   
   if (direction === 'forward') {
     // Top screen - running into screen (smaller perspective)

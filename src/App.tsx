@@ -556,10 +556,10 @@ function App() {
             {/* Bottom Obstacles */}
             {bottomObstacles.map(obs => (
               obs.type === 'pit' ? (
-                // 地坑 - 白色倒三角
+                // 地坑 - 黑色倒三角
                 <div
                   key={obs.id}
-                  className="absolute flex items-end justify-center"
+                  className="absolute"
                   style={{
                     left: obs.x,
                     top: obs.y,
@@ -567,10 +567,10 @@ function App() {
                     height: obs.height,
                   }}
                 >
-                  <svg width={obs.width} height={obs.height} className="absolute bottom-0">
+                  <svg width={obs.width} height={obs.height}>
                     <polygon 
-                      points={`${obs.width/2},5 5,${obs.height} ${obs.width-5},${obs.height}`}
-                      fill="white" 
+                      points={`${obs.width/2},0 0,${obs.height} ${obs.width},${obs.height}`}
+                      fill="black" 
                       stroke="black" 
                       strokeWidth="2"
                     />
