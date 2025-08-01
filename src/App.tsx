@@ -99,7 +99,7 @@ function App() {
         if ((keysPressed.has('ArrowUp') || keysPressed.has('w') || keysPressed.has('W')) && 
             bottomPlayerState === 'running' && prev.y >= groundY - 5) {
           setBottomPlayerState('jumping');
-          setJumpVelocity(-15); // 增加跳跃力度确保能跳过木箱
+          setJumpVelocity(-18); // 增加跳跃力度确保能跳过木箱
         }
         
         // Handle sliding
@@ -163,7 +163,7 @@ function App() {
           setBottomPlayerState('running');
           setJumpVelocity(0);
         } else {
-          setJumpVelocity(prev => prev + 0.8); // gravity
+          setJumpVelocity(prev => prev + 0.7); // gravity
         }
         
         return { ...prev, y: newY };
