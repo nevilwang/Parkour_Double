@@ -556,7 +556,7 @@ function App() {
             {/* Bottom Obstacles */}
             {bottomObstacles.map(obs => (
               obs.type === 'pit' ? (
-                // 地坑 - 黑色倒三角
+                // 地坑 - 白色倒三角
                 <div
                   key={obs.id}
                   className="absolute"
@@ -569,8 +569,8 @@ function App() {
                 >
                   <svg width={obs.width} height={obs.height}>
                     <polygon 
-                      points={`${obs.width/2},0 0,${obs.height} ${obs.width},${obs.height}`}
-                      fill="black" 
+                      points={`0,0 ${obs.width},0 ${obs.width/2},${obs.height}`}
+                      fill="white" 
                       stroke="black" 
                       strokeWidth="2"
                     />
