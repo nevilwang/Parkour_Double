@@ -62,6 +62,7 @@ function App() {
 
   // Player states
   const [bottomPlayerState, setBottomPlayerState] = useState<'running' | 'jumping' | 'sliding'>('running');
+  const [bottomPlayerState, setBottomPlayerState] = useState<'running' | 'jumping' | 'crawling'>('running');
   const [jumpVelocity, setJumpVelocity] = useState(0);
 
   // Handle keyboard input
@@ -105,10 +106,11 @@ function App() {
         }
         
         // Handle sliding
+        // Handle crawling
         if ((keysPressed.has('ArrowDown') || keysPressed.has('s') || keysPressed.has('S')) && 
             bottomPlayerState === 'running') {
-          setBottomPlayerState('sliding');
-          setTimeout(() => setBottomPlayerState('running'), 500);
+          setBottomPlayerState('crawling');
+          setTimeout(() => setBottomPlayerState('running'), 600);
         }
         
         return { ...prev, y: newY };
@@ -228,14 +230,14 @@ function App() {
           type: 'ground_box',
         };
       } else {
-        // 空中箱子 - 需要滑铲
+        // 空中树枝 - 需要爬行
         return {
           id,
           x: GAME_WIDTH,
           y: GAME_HEIGHT - GROUND_HEIGHT - 80,
-          width: 35,
-          height: 35,
-          type: 'air_box',
+          width: 60,
+          height: 15,
+          type: 'air_branch',
         };
       }
     }
@@ -324,9 +326,10 @@ function App() {
         let playerBottom = player.y + PLAYER_SIZE / 2;
         
         // Adjust hitbox for sliding
-        if (isBottom && bottomPlayerState === 'sliding') {
+        // Adjust hitbox for crawling
+        if (isBottom && bottomPlayerState === 'crawling') {
           playerTop = player.y;
-          playerBottom = player.y + PLAYER_SIZE / 4;
+          playerBottom = player.y + PLAYER_SIZE / 3;
         }
 
         const obsLeft = obs.x;
@@ -569,10 +572,11 @@ function App() {
             <svg className="absolute inset-0 w-full h-full">
               <StickFigure 
                 x={bottomPlayer.x} 
-                y={bottomPlayerState === 'sliding' ? bottomPlayer.y + PLAYER_SIZE / 4 : bottomPlayer.y} 
+                y={bottomPlayerState === 'crawling' ? bottomPlayer.y + PLAYER_SIZE / 3 : bottomPlayer.y} 
                 size={PLAYER_SIZE} 
                 isRunning={gameState === 'playing'}
                 direction="right"
+                state={bottomPlayerState}
               />
             </svg>
 
@@ -627,10 +631,10 @@ function App() {
                   </svg>
                 </div>
               ) : (
-                // 空中箱子 - 需要滑铲
+                // 空中树枝 - 需要爬行通过
                 <div
                   key={obs.id}
-                  className="absolute bg-gray-600 border-2 border-gray-800"
+                  className="absolute"
                   style={{
                     left: obs.x,
                     top: obs.y,
@@ -638,18 +642,34 @@ function App() {
                     height: obs.height,
                   }}
                 >
-                  {/* 金属箱子纹理 */}
-                  <div className="absolute inset-1 border border-gray-700 opacity-50"></div>
-                  <div className="absolute top-1 left-1 right-1 h-0.5 bg-gray-400 opacity-50"></div>
-                  <div className="absolute bottom-1 left-1 right-1 h-0.5 bg-gray-800 opacity-50"></div>
-                  <div className="absolute top-1 bottom-1 left-1 w-0.5 bg-gray-400 opacity-50"></div>
-                  <div className="absolute top-1 bottom-1 right-1 w-0.5 bg-gray-800 opacity-50"></div>
+                  <svg width={obs.width} height={obs.height}>
+                    {/* 树枝主干 */}
+                    <rect x="0" y={obs.height/2 - 3} width={obs.width} height="6" fill="#8B4513" rx="3" />
+                    
+                    {/* 树枝分叉 */}
+                    <line x1={obs.width * 0.2} y1={obs.height/2} x2={obs.width * 0.15} y2={obs.height/2 - 8} stroke="#8B4513" strokeWidth="2" />
+                    <line x1={obs.width * 0.4} y1={obs.height/2} x2={obs.width * 0.35} y2={obs.height/2 + 8} stroke="#8B4513" strokeWidth="2" />
+                    <line x1={obs.width * 0.6} y1={obs.height/2} x2={obs.width * 0.65} y2={obs.height/2 - 6} stroke="#8B4513" strokeWidth="2" />
+                    <line x1={obs.width * 0.8} y1={obs.height/2} x2={obs.width * 0.85} y2={obs.height/2 + 6} stroke="#8B4513" strokeWidth="2" />
+                    
+                    {/* 小叶子 */}
+                    <ellipse cx={obs.width * 0.15} cy={obs.height/2 - 8} rx="3" ry="2" fill="#228B22" />
+                    <ellipse cx={obs.width * 0.35} cy={obs.height/2 + 8} rx="3" ry="2" fill="#228B22" />
+                    <ellipse cx={obs.width * 0.65} cy={obs.height/2 - 6} rx="3" ry="2" fill="#228B22" />
+                    <ellipse cx={obs.width * 0.85} cy={obs.height/2 + 6} rx="3" ry="2" fill="#228B22" />
+                    
+                    {/* 额外的小分枝 */}
+                    <line x1={obs.width * 0.25} y1={obs.height/2} x2={obs.width * 0.22} y2={obs.height/2 + 5} stroke="#8B4513" strokeWidth="1" />
+                    <line x1={obs.width * 0.75} y1={obs.height/2} x2={obs.width * 0.78} y2={obs.height/2 - 4} stroke="#8B4513" strokeWidth="1" />
+                    <ellipse cx={obs.width * 0.22} cy={obs.height/2 + 5} rx="2" ry="1.5" fill="#228B22" />
+                    <ellipse cx={obs.width * 0.78} cy={obs.height/2 - 4} rx="2" ry="1.5" fill="#228B22" />
+                  </svg>
                 </div>
               )
             ))}
 
             <div className="absolute bottom-2 left-2 text-black text-sm font-semibold bg-gray-200 px-2 py-1 rounded border">
-              下屏: ↑ 跳跃跨栏 ↓ 下滑避箱
+              下屏: ↑ 跳跃跨栏 ↓ 爬行过树枝
             </div>
           </div>
 
@@ -695,7 +715,7 @@ function App() {
                 <p className="mb-6 text-gray-600">
                   上屏使用左右键避开障碍物
                   <br />
-                  下屏按↑跳过坑洞和跨栏，按↓滑过空中箱子
+                  下屏按↑跳过坑洞和跨栏，按↓爬行通过树枝
                   <br />
                   坚持得越久分数越高！
                 </p>
@@ -736,7 +756,7 @@ function App() {
 
         {/* Instructions */}
         <div className="mt-6 text-center text-gray-600 text-sm">
-          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃避开坑洞, ↓下滑避开木箱</p>
+          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃避开坑洞, ↓爬行通过树枝</p>
         </div>
       </div>
     </div>

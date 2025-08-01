@@ -6,6 +6,7 @@ interface StickFigureProps {
   size: number;
   isRunning?: boolean;
   direction?: 'right' | 'forward';
+  state?: 'running' | 'jumping' | 'crawling';
 }
 
 const StickFigure: React.FC<StickFigureProps> = ({ 
@@ -13,7 +14,8 @@ const StickFigure: React.FC<StickFigureProps> = ({
   y, 
   size, 
   isRunning = false, 
-  direction = 'right' 
+  direction = 'right',
+  state = 'running'
 }) => {
   const headRadius = size * 0.15;
   const bodyHeight = size * 0.4;
@@ -87,6 +89,69 @@ const StickFigure: React.FC<StickFigureProps> = ({
   }
   
   // Bottom screen - running to the right
+  if (state === 'crawling') {
+    // Crawling pose
+    return (
+      <g transform={`translate(${x}, ${y})`}>
+        {/* Head - lower position */}
+        <circle 
+          cx={headRadius} 
+          cy={-headRadius * 2} 
+          r={headRadius} 
+          fill="none" 
+          stroke="black" 
+          strokeWidth="2"
+        />
+        
+        {/* Body - horizontal */}
+        <line 
+          x1={0} 
+          y1={-headRadius} 
+          x2={bodyHeight} 
+          y2={-headRadius} 
+          stroke="black" 
+          strokeWidth="2"
+        />
+        
+        {/* Arms - supporting body */}
+        <line 
+          x1={bodyHeight * 0.3} 
+          y1={-headRadius} 
+          x2={bodyHeight * 0.3} 
+          y2={limbLength * 0.5} 
+          stroke="black" 
+          strokeWidth="2"
+        />
+        <line 
+          x1={bodyHeight * 0.7} 
+          y1={-headRadius} 
+          x2={bodyHeight * 0.7} 
+          y2={limbLength * 0.5} 
+          stroke="black" 
+          strokeWidth="2"
+        />
+        
+        {/* Legs - bent */}
+        <line 
+          x1={bodyHeight * 0.2} 
+          y1={-headRadius} 
+          x2={bodyHeight * 0.1} 
+          y2={limbLength * 0.3} 
+          stroke="black" 
+          strokeWidth="2"
+        />
+        <line 
+          x1={bodyHeight * 0.8} 
+          y1={-headRadius} 
+          x2={bodyHeight * 0.9} 
+          y2={limbLength * 0.3} 
+          stroke="black" 
+          strokeWidth="2"
+        />
+      </g>
+    );
+  }
+  
   return (
     <g transform={`translate(${x}, ${y})`}>
       {/* Head */}
