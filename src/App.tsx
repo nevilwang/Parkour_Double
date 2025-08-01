@@ -233,7 +233,7 @@ function App() {
         return {
           id,
           x: GAME_WIDTH,
-          y: GAME_HEIGHT - GROUND_HEIGHT - 80,
+          y: GAME_HEIGHT - GROUND_HEIGHT - 60,
           width: 60,
           height: 15,
           type: 'air_branch',
