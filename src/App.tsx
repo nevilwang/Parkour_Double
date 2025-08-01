@@ -513,57 +513,16 @@ function App() {
 
             {/* Top Obstacles */}
             {topObstacles.map(obs => (
-              <svg
+              <div
                 key={obs.id}
-                className="absolute"
+                className="absolute bg-black border-2 border-gray-800"
                 style={{
                   left: obs.x,
                   top: obs.y,
                   width: obs.width,
                   height: obs.height,
                 }}
-              >
-                {/* 跨栏底座 */}
-                <rect 
-                  x="10%" 
-                  y="80%" 
-                  width="80%" 
-                  height="20%" 
-                  fill="#8B4513" 
-                  stroke="#654321" 
-                  strokeWidth="1"
-                />
-                {/* 左支柱 */}
-                <rect 
-                  x="15%" 
-                  y="20%" 
-                  width="8%" 
-                  height="80%" 
-                  fill="#C0C0C0" 
-                  stroke="#A0A0A0" 
-                  strokeWidth="1"
-                />
-                {/* 右支柱 */}
-                <rect 
-                  x="77%" 
-                  y="20%" 
-                  width="8%" 
-                  height="80%" 
-                  fill="#C0C0C0" 
-                  stroke="#A0A0A0" 
-                  strokeWidth="1"
-                />
-                {/* 跨栏横杆 */}
-                <rect 
-                  x="15%" 
-                  y="25%" 
-                  width="70%" 
-                  height="6%" 
-                  fill="#FF4500" 
-                  stroke="#CC3300" 
-                  strokeWidth="1"
-                />
-              </svg>
+              />
             ))}
 
             <div className="absolute top-2 left-2 text-black text-sm font-semibold bg-gray-200 px-2 py-1 rounded border">
