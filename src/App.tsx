@@ -210,26 +210,14 @@ function App() {
     } else {
       // Bottom screen obstacles: pits, ground boxes, and air boxes
       const rand = Math.random();
-      let obstacleType: 'pit' | 'ground_box' | 'air_box';
-      if (rand < 0.33) {
-        obstacleType = 'pit';
-      } else if (rand < 0.66) {
+      let obstacleType: 'ground_box' | 'air_branch';
+      if (rand < 0.5) {
         obstacleType = 'ground_box';
       } else {
-        obstacleType = 'air_box';
+        obstacleType = 'air_branch';
       }
       
-      if (obstacleType === 'pit') {
-        // 地坑 - 白色倒三角
-        return {
-          id,
-          x: GAME_WIDTH,
-          y: GAME_HEIGHT - GROUND_HEIGHT,
-          width: 50,
-          height: 30,
-          type: 'pit',
-        };
-      } else if (obstacleType === 'ground_box') {
+      if (obstacleType === 'ground_box') {
         // 地面箱子 - 需要跳跃
         return {
           id,
@@ -596,28 +584,7 @@ function App() {
 
             {/* Bottom Obstacles */}
             {bottomObstacles.map(obs => (
-              obs.type === 'pit' ? (
-                // 地坑 - 白色倒三角
-                <div
-                  key={obs.id}
-                  className="absolute"
-                  style={{
-                    left: obs.x,
-                    top: obs.y,
-                    width: obs.width,
-                    height: obs.height,
-                  }}
-                >
-                  <svg width={obs.width} height={obs.height}>
-                    <polygon 
-                      points={`0,0 ${obs.width},0 ${obs.width/2},${obs.height}`}
-                      fill="white" 
-                      stroke="black" 
-                      strokeWidth="2"
-                    />
-                  </svg>
-                </div>
-              ) : obs.type === 'ground_box' ? (
+              obs.type === 'ground_box' ? (
                 // 地面箱子 - 需要跳跃
                 <div
                   key={obs.id}
@@ -683,7 +650,7 @@ function App() {
             ))}
 
             <div className="absolute bottom-2 left-2 text-black text-sm font-semibold bg-gray-200 px-2 py-1 rounded border">
-              下屏: ↑ 跳跃跨栏 ↓ 爬行过树枝
+              下屏: ↑ 跳跃跨栏，↓ 爬行过树枝
             </div>
           </div>
 
@@ -729,7 +696,7 @@ function App() {
                 <p className="mb-6 text-gray-600">
                   上屏使用左右键避开障碍物
                   <br />
-                  下屏按↑跳过坑洞和跨栏，按↓爬行通过树枝
+                  下屏按↑跳过跨栏，按↓爬行通过树枝
                   <br />
                   坚持得越久分数越高！
                 </p>
@@ -770,7 +737,7 @@ function App() {
 
         {/* Instructions */}
         <div className="mt-6 text-center text-gray-600 text-sm">
-          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃避开坑洞, ↓爬行通过树枝 | 空格键暂停</p>
+          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃跨栏，↓爬行通过树枝 | 空格键暂停</p>
         </div>
       </div>
     </div>
