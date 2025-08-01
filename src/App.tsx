@@ -50,6 +50,8 @@ function App() {
 
   // Game speed
   const [gameSpeed, setGameSpeed] = useState(2);
+  const [topScreenSpeed, setTopScreenSpeed] = useState(1.5);
+  const [bottomScreenSpeed, setBottomScreenSpeed] = useState(2);
 
   // 障碍物生成间隔控制
   const [lastTopObstacleTime, setLastTopObstacleTime] = useState(0);
@@ -247,14 +249,14 @@ function App() {
       // Move obstacles
       setBottomObstacles(prev => 
         prev
-          .map(obs => ({ ...obs, x: obs.x - gameSpeed * 1.5 }))
+          .map(obs => ({ ...obs, x: obs.x - bottomScreenSpeed }))
           .filter(obs => obs.x > -obs.width)
       );
 
       // 上屏障碍物向下移动（模拟向上跑）
       setTopObstacles(prev => 
         prev
-          .map(obs => ({ ...obs, y: obs.y + gameSpeed * 2 }))
+          .map(obs => ({ ...obs, y: obs.y + topScreenSpeed }))
           .filter(obs => obs.y < GAME_HEIGHT + obs.height)
       );
 
@@ -301,12 +303,14 @@ function App() {
       // Update score
       setScore(prev => prev + 1);
 
-      // Increase game speed gradually
-      setGameSpeed(prev => Math.min(prev + 0.001, 5));
+      // Increase speeds gradually - top screen slower acceleration, bottom screen faster
+      setTopScreenSpeed(prev => Math.min(prev + 0.0008, 4)); // 上屏加速平缓
+      setBottomScreenSpeed(prev => Math.min(prev + 0.0015, 6)); // 下屏加速更快
+      setGameSpeed(prev => Math.min(prev + 0.001, 5)); // 保持原有的基础速度增长
     }, 16);
 
     return () => clearInterval(gameLoop);
-  }, [gameState, gameSpeed, generateObstacle, lastTopObstacleTime]);
+  }, [gameState, gameSpeed, topScreenSpeed, bottomScreenSpeed, generateObstacle, lastTopObstacleTime]);
 
   // Collision detection
   useEffect(() => {
@@ -352,6 +356,8 @@ function App() {
     setGameState('playing');
     setScore(0);
     setGameSpeed(2);
+    setTopScreenSpeed(1.5);
+    setBottomScreenSpeed(2);
     setBottomPlayer({ x: 100, y: GAME_HEIGHT - GROUND_HEIGHT - PLAYER_SIZE / 2 });
     setTopPlayer({ x: ROAD_OFFSET + LANE_WIDTH * 2 + LANE_WIDTH / 2, y: TOP_PLAYER_Y });
     setTopPlayerLane(2);
@@ -370,6 +376,8 @@ function App() {
     setGameState('idle');
     setScore(0);
     setGameSpeed(2);
+    setTopScreenSpeed(1.5);
+    setBottomScreenSpeed(2);
     setBottomPlayer({ x: 100, y: GAME_HEIGHT - GROUND_HEIGHT - PLAYER_SIZE / 2 });
     setTopPlayer({ x: ROAD_OFFSET + LANE_WIDTH * 2 + LANE_WIDTH / 2, y: TOP_PLAYER_Y });
     setTopPlayerLane(2);
