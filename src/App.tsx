@@ -67,6 +67,17 @@ function App() {
   // Handle keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle spacebar for pause/unpause
+      if (e.key === ' ') {
+        e.preventDefault();
+        if (gameState === 'playing') {
+          setGameState('paused');
+        } else if (gameState === 'paused') {
+          setGameState('playing');
+        }
+        return;
+      }
+      
       setKeysPressed(prev => new Set(prev).add(e.key));
     };
 
@@ -233,7 +244,7 @@ function App() {
         return {
           id,
           x: GAME_WIDTH,
-          y: GAME_HEIGHT - GROUND_HEIGHT - 60,
+          y: GAME_HEIGHT - GROUND_HEIGHT - 45,
           width: 60,
           height: 15,
           type: 'air_branch',
@@ -755,7 +766,7 @@ function App() {
 
         {/* Instructions */}
         <div className="mt-6 text-center text-gray-600 text-sm">
-          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃避开坑洞, ↓爬行通过树枝</p>
+          <p>键盘控制: WASD 或 方向键 | 下屏: ↑跳跃避开坑洞, ↓爬行通过树枝 | 空格键暂停</p>
         </div>
       </div>
     </div>
