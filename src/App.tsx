@@ -210,7 +210,7 @@ function App() {
         return {
           id,
           x: GAME_WIDTH,
-          y: GAME_HEIGHT - GROUND_HEIGHT - 5,
+          y: GAME_HEIGHT - GROUND_HEIGHT,
           width: 50,
           height: 30,
           type: 'pit',
@@ -247,7 +247,7 @@ function App() {
       // Move obstacles
       setBottomObstacles(prev => 
         prev
-          .map(obs => ({ ...obs, x: obs.x - gameSpeed }))
+          .map(obs => ({ ...obs, x: obs.x - gameSpeed * 1.5 }))
           .filter(obs => obs.x > -obs.width)
       );
 
