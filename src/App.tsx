@@ -515,14 +515,29 @@ function App() {
             {topObstacles.map(obs => (
               <div
                 key={obs.id}
-                className="absolute bg-black border-2 border-gray-800"
+                className="absolute"
                 style={{
                   left: obs.x,
                   top: obs.y,
                   width: obs.width,
                   height: obs.height,
                 }}
-              />
+              >
+                <svg width={obs.width} height={obs.height}>
+                  {/* 跨栏支撑腿 */}
+                  <rect x="5" y={obs.height - 6} width="3" height="6" fill="#8B4513" />
+                  <rect x={obs.width - 8} y={obs.height - 6} width="3" height="6" fill="#8B4513" />
+                  
+                  {/* 跨栏横杆 */}
+                  <rect x="0" y={obs.height - 18} width={obs.width} height="2" fill="#FF4444" />
+                  <rect x="0" y={obs.height - 14} width={obs.width} height="2" fill="#FF4444" />
+                  <rect x="0" y={obs.height - 10} width={obs.width} height="2" fill="#FF4444" />
+                  
+                  {/* 支撑杆连接 */}
+                  <line x1="6.5" y1={obs.height - 18} x2="6.5" y2={obs.height - 6} stroke="#8B4513" strokeWidth="1.5" />
+                  <line x1={obs.width - 6.5} y1={obs.height - 18} x2={obs.width - 6.5} y2={obs.height - 6} stroke="#8B4513" strokeWidth="1.5" />
+                </svg>
+              </div>
             ))}
 
             <div className="absolute top-2 left-2 text-black text-sm font-semibold bg-gray-200 px-2 py-1 rounded border">
@@ -588,7 +603,7 @@ function App() {
                 // 地面箱子 - 需要跳跃
                 <div
                   key={obs.id}
-                  className="absolute bg-amber-600 border-2 border-amber-800"
+                  className="absolute"
                   style={{
                     left: obs.x,
                     top: obs.y,
@@ -596,10 +611,20 @@ function App() {
                     height: obs.height,
                   }}
                 >
-                  {/* Wood texture lines */}
-                  <div className="absolute inset-1 border border-amber-700 opacity-50"></div>
-                  <div className="absolute top-2 left-1 right-1 h-0.5 bg-amber-700 opacity-50"></div>
-                  <div className="absolute bottom-2 left-1 right-1 h-0.5 bg-amber-700 opacity-50"></div>
+                  <svg width={obs.width} height={obs.height}>
+                    {/* 跨栏支撑腿 */}
+                    <rect x="2" y={obs.height - 8} width="4" height="8" fill="#8B4513" />
+                    <rect x={obs.width - 6} y={obs.height - 8} width="4" height="8" fill="#8B4513" />
+                    
+                    {/* 跨栏横杆 */}
+                    <rect x="0" y={obs.height - 25} width={obs.width} height="3" fill="#FF4444" />
+                    <rect x="0" y={obs.height - 20} width={obs.width} height="3" fill="#FF4444" />
+                    <rect x="0" y={obs.height - 15} width={obs.width} height="3" fill="#FF4444" />
+                    
+                    {/* 支撑杆连接 */}
+                    <line x1="4" y1={obs.height - 25} x2="4" y2={obs.height - 8} stroke="#8B4513" strokeWidth="2" />
+                    <line x1={obs.width - 4} y1={obs.height - 25} x2={obs.width - 4} y2={obs.height - 8} stroke="#8B4513" strokeWidth="2" />
+                  </svg>
                 </div>
               ) : (
                 // 空中箱子 - 需要滑铲
@@ -624,7 +649,7 @@ function App() {
             ))}
 
             <div className="absolute bottom-2 left-2 text-black text-sm font-semibold bg-gray-200 px-2 py-1 rounded border">
-              下屏: ↑ 跳跃 ↓ 下滑
+              下屏: ↑ 跳跃跨栏 ↓ 下滑避箱
             </div>
           </div>
 
@@ -670,7 +695,7 @@ function App() {
                 <p className="mb-6 text-gray-600">
                   上屏使用左右键避开障碍物
                   <br />
-                  下屏按↑跳过坑洞，按↓滑过木箱
+                  下屏按↑跳过坑洞和跨栏，按↓滑过空中箱子
                   <br />
                   坚持得越久分数越高！
                 </p>
