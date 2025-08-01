@@ -61,7 +61,6 @@ function App() {
   const [keysPressed, setKeysPressed] = useState<Set<string>>(new Set());
 
   // Player states
-  const [bottomPlayerState, setBottomPlayerState] = useState<'running' | 'jumping' | 'sliding'>('running');
   const [bottomPlayerState, setBottomPlayerState] = useState<'running' | 'jumping' | 'crawling'>('running');
   const [jumpVelocity, setJumpVelocity] = useState(0);
 
